@@ -1,7 +1,7 @@
 # Start the Unitree G1 Sim
 
 ```bash
-cd /home/alb/workspace/unitree_sim/hugging_face
+cd /path/to/unitree_g1_simulation
 source venv/bin/activate
 export CYCLONEDDS_HOME="$(pwd)/cyclonedds/install"
 cd unitree-g1-mujoco
