@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environment
+venv/
+
+# Dependencies (rebuilt by init.sh)
+cyclonedds/
+unitree_sdk2_python/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
