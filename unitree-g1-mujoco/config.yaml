@@ -15,7 +15,7 @@ JOYSTICK_DEVICE: 0
 # Simulation Settings
 FREE_BASE: False
 enable_waist: False  # False = band on torso, True = band on pelvis
-ENABLE_ELASTIC_BAND: True
+ENABLE_ELASTIC_BAND: False
 
 # Timing
 SIMULATE_DT: 0.004  # 250Hz physics

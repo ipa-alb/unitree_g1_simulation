@@ -55,11 +55,18 @@ ENABLE_ELASTIC_BAND: False   # robot must self-balance
 USE_JOYSTICK: 0              # skip gamepad detection
 ```
 
-## Run a Locomotion Policy
+## Run a Locomotion Policy (GR00T WBC)
+
+Make sure `ENABLE_ELASTIC_BAND: False` in `config.yaml`, then in a second terminal:
 
 ```bash
-# Terminal 2 (with lerobot env):
-python examples/unitree_g1/gr00t_locomotion.py --repo-id "nepyope/GR00T-WholeBodyControl_g1"
+source venv/bin/activate && cd unitree-g1-mujoco
+
+# Downloads Balance + Walk ONNX models from Hugging Face on first run
+python groot_controller.py
 ```
+
+Use keyboard (W/A/S/D) or joystick in the MuJoCo viewer to send walk commands.
+The controller switches between Balance (standing) and Walk policies automatically.
 
 For installation see [SETUP.md](SETUP.md).
