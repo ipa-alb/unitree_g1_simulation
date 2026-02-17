@@ -38,9 +38,18 @@ right_pub.Init()
 NUM_HAND_MOTORS = 7  # thumb(3) + middle(2) + index(2)
 
 # Joint order: thumb_0, thumb_1, thumb_2, middle_0, middle_1, index_0, index_1
+# The left and right hands are mirrored in the MuJoCo model — the close
+# direction for fingers (middle/index) is negative on the left hand and
+# positive on the right hand, and vice-versa for the thumb.
 # PD gains — moderate stiffness for smooth motion
 KP = 5.0
 KD = 0.3
+
+# Close direction per joint: +1 or -1 indicating which end of the joint
+# range corresponds to a closed fist.
+#                        thumb_0  thumb_1  thumb_2  middle_0  middle_1  index_0  index_1
+LEFT_CLOSE_SIGN  = [ 1.0,  1.0,  1.0, -1.0, -1.0, -1.0, -1.0]
+RIGHT_CLOSE_SIGN = [-1.0, -1.0, -1.0,  1.0,  1.0,  1.0,  1.0]
 
 
 def send_hand_cmd(pub, positions):
@@ -55,14 +64,14 @@ def send_hand_cmd(pub, positions):
     pub.Write(cmd)
 
 
-def close_hand():
-    """All fingers curled inward."""
-    return [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+def close_hand(close_sign):
+    """All fingers curled inward (using per-joint close direction)."""
+    return [s * 1.0 for s in close_sign]
 
 
 def open_hand():
-    """All fingers extended."""
-    return [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    """All fingers extended (zero position)."""
+    return [0.0] * NUM_HAND_MOTORS
 
 
 def main():
@@ -86,8 +95,8 @@ def main():
 
         elif args.action == "close":
             while True:
-                send_hand_cmd(left_pub, close_hand())
-                send_hand_cmd(right_pub, close_hand())
+                send_hand_cmd(left_pub, close_hand(LEFT_CLOSE_SIGN))
+                send_hand_cmd(right_pub, close_hand(RIGHT_CLOSE_SIGN))
                 time.sleep(0.02)
 
         elif args.action == "wave":
@@ -95,9 +104,10 @@ def main():
             while True:
                 # Sinusoidal open/close at ~0.5 Hz
                 val = (math.sin(t * math.pi) + 1.0) / 2.0  # 0..1
-                positions = [val * 1.0] * NUM_HAND_MOTORS
-                send_hand_cmd(left_pub, positions)
-                send_hand_cmd(right_pub, positions)
+                left_pos = [val * s for s in LEFT_CLOSE_SIGN]
+                right_pos = [val * s for s in RIGHT_CLOSE_SIGN]
+                send_hand_cmd(left_pub, left_pos)
+                send_hand_cmd(right_pub, right_pos)
                 t += 0.02
                 time.sleep(0.02)
 
