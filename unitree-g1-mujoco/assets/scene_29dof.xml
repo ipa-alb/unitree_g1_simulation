@@ -14,6 +14,10 @@
     <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
       markrgb="0.8 0.8 0.8" width="300" height="300"/>
     <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
+    <material name="table_wood" rgba="0.55 0.35 0.15 1" specular="0.1" shininess="0.3"/>
+    <material name="table_leg" rgba="0.45 0.28 0.12 1" specular="0.1" shininess="0.2"/>
+    <material name="bottle" rgba="0.15 0.5 0.2 0.85" specular="0.8" shininess="0.9"/>
+    <material name="bottle_cap" rgba="0.9 0.9 0.9 1" specular="0.5" shininess="0.5"/>
   </asset>
 
   <worldbody>
@@ -25,6 +29,28 @@
     <site name="right_hand_marker" pos="0.1 0 0" size="0.025" rgba="0 1 0 1" type="sphere"/>
     <site name="left_foot_marker" pos="0.1 0 0" size="0.025" rgba="1 0 0 1" type="sphere"/>
     <site name="right_foot_marker" pos="0.1 0 0" size="0.025" rgba="1 0 0 1" type="sphere"/>
+    <!-- Table (static, to the right of the robot) -->
+    <geom name="tabletop" type="box" size="0.3 0.2 0.01" pos="0.45 -0.5 0.74"
+          material="table_wood" friction="0.8"/>
+    <geom name="table_leg_1" type="cylinder" size="0.02 0.365" pos="0.2 -0.35 0.365"
+          material="table_leg"/>
+    <geom name="table_leg_2" type="cylinder" size="0.02 0.365" pos="0.7 -0.35 0.365"
+          material="table_leg"/>
+    <geom name="table_leg_3" type="cylinder" size="0.02 0.365" pos="0.2 -0.65 0.365"
+          material="table_leg"/>
+    <geom name="table_leg_4" type="cylinder" size="0.02 0.365" pos="0.7 -0.65 0.365"
+          material="table_leg"/>
+
+    <!-- Bottle (free body, graspable) -->
+    <body name="bottle" pos="0.45 -0.5 0.86">
+      <freejoint name="bottle_joint"/>
+      <geom name="bottle_body" type="cylinder" size="0.03 0.1" mass="0.3"
+            material="bottle" friction="1.0 0.5 0.01"/>
+      <geom name="bottle_cap" type="cylinder" size="0.015 0.015" pos="0 0 0.115"
+            mass="0.02" material="bottle_cap" friction="1.0 0.5 0.01"/>
+    </body>
+
+    <!-- Third-person camera -->
     <camera name="global_view" pos="2.910 -5.040 3.860" xyaxes="0.866 0.500 0.000 -0.250 0.433 0.866"/>
   </worldbody>
   <!-- <default>

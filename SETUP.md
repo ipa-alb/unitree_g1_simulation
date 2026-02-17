@@ -75,7 +75,7 @@ pip install "opencv-python>=4.8.0" "pyzmq>=25.0.0" "msgpack>=1.0.0" "msgpack-num
 Undeclared dependencies (used in code but missing from requirements.txt):
 
 ```bash
-pip install gymnasium pygame scipy termcolor
+pip install gymnasium pygame scipy termcolor onnxruntime huggingface_hub
 ```
 
 ## Running
