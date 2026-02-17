@@ -22,6 +22,11 @@ cd unitree-g1-mujoco && python view_cameras_live.py
 # Control hands (separate terminal, while sim is running)
 cd unitree-g1-mujoco && python hand_controller.py --action close   # or open, wave
 
+# Run GR00T WBC locomotion controller (separate terminal, while sim is running)
+# Downloads ONNX models from HuggingFace on first run. Robot self-balances and walks.
+# Requires ENABLE_ELASTIC_BAND: False in config.yaml
+cd unitree-g1-mujoco && python groot_controller.py
+
 # Full automated setup from scratch
 ./init.sh
 ```
@@ -56,6 +61,7 @@ run_sim.py / env.py
 
 | File | Role |
 |------|------|
+| `unitree-g1-mujoco/groot_controller.py` | GR00T WBC locomotion controller (balance + walk ONNX policies over DDS) |
 | `unitree-g1-mujoco/hand_controller.py` | DDS hand controller (open/close/wave) — run in separate terminal |
 | `unitree-g1-mujoco/run_sim.py` | Main CLI entry point |
 | `unitree-g1-mujoco/env.py` | Gymnasium wrapper (`make_env()`) — action: 29 joint positions, obs: 97-dim |
@@ -82,3 +88,4 @@ Edit `unitree-g1-mujoco/config.yaml`. Key settings:
 - CycloneDDS 0.10.x built from source at `./cyclonedds/install/` (requires `CYCLONEDDS_HOME` env var)
 - `unitree_sdk2_python` installed as editable from `./unitree_sdk2_python/`
 - MuJoCo >= 3.0, numpy, pygame, gymnasium, scipy, opencv, pyzmq, msgpack
+- `onnxruntime`, `huggingface_hub` (for `groot_controller.py`)
